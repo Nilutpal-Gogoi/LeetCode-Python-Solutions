@@ -33,6 +33,5 @@ def binary(nums):
     return len(nums)-low
 
 
-def  countNegaitveNumbers(arr):
 
 
