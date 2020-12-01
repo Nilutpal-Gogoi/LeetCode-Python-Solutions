@@ -28,61 +28,32 @@ def threeSum(nums,n):
 # ---------------------- Two Pointer Technique ----------------------------------------
 
 
-def threeSum1(nums, n):
+def threeSum1(nums):
     nums.sort()
-    for i in range(n-2):
-        if twoSum(nums, -nums[i], i+1):
-            return True
-    return False
+    triplets = []
+    for i in range(len(nums)-2):
+        if i>0 and nums[i] == nums[i-1]:    # for this case [-1,0,1,2,-1,-4]
+            continue
+        num = -nums[i]
+        left = i+1
+        right = len(nums)-1
+        while left < right:
+            current_sum = nums[left]+nums[right]
+            if current_sum == num:   # Found the triplet
+                triplets.append([nums[i],nums[left],nums[right]])
+                left += 1
+                right -= 1
+                while left < right and nums[left] == nums[left - 1]:
+                    left += 1       # Skip the same element to avoid duplicate triplets
+                while left < right and nums[right] == nums[right + 1]:
+                    right -= 1      # Skip the same element to avoid duplicate triplets
+            elif current_sum < num:
+                left += 1
+            else:
+                right -= 1
+    return triplets
 
 
-def twoSum(nums, x, i):
-    j = len(nums)-1
-    while i<j:
-        if (nums[i]+nums[j]) < x:
-            i += 1
-        elif (nums[i]+nums[j]) > x:
-            j -= 1
-        else:
-            return True
-    return False
+print(threeSum1([-1,0,1,2,-1,-4]))
 
-
-# print(threeSum1([-3, -1, 0, 4, 6, 7], 6))
-
-# ------------------------
-
-
-def binary(arr, k):
-    l = 0
-    h = len(arr)-1
-    while l<h:
-        if arr[l] + arr[h] == k:
-            return [arr[l], arr[h]]
-        elif arr[l]+arr[h] < k:
-            l += 1
-        else:
-            h -= 1
-    return False
-
-
-def sumOfThreeElements2(arr, k):
-    n = len(arr)
-    left = 0
-    right = n-1
-    arr.sort()
-    main = []
-    for i in range(n-2):
-        result = k-arr[i]
-        lis = binary(arr[i+1:n], result)
-        if lis:
-            lis.insert(0, arr[i])
-            main.append(lis)
-    if main:
-        return main
-    else:
-        return False
-
-
-print(sumOfThreeElements2([-1, 0, 1, 2, -1, -4], 0))
-
+#  -4 -1 -1 0 1 2
